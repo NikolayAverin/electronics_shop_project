@@ -1,6 +1,7 @@
 import csv
 from config import ITEMS
 
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -46,11 +47,11 @@ class Item:
         if len(name) < 11:
             self.__name = name
         else:
-            self.__name = name[0:11]
+            self.__name = name[0:10]
 
     @classmethod
     def instantiate_from_csv(cls, file):
-        with open(ITEMS, encoding='windows-1251') as csvfile:
+        with open(file, encoding='windows-1251') as csvfile:
             reader = csv.reader(csvfile, delimiter=',')
             count = 0
             item_all = []
