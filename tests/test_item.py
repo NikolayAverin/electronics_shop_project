@@ -1,5 +1,7 @@
 """Здесь надо написать тесты с использованием pytest для модуля item."""
+import pytest
 from config import *
+from src.item import *
 from src.phone import *
 
 
@@ -29,6 +31,10 @@ def test_name():
 def test_instantiate_from_csv():
     Item.instantiate_from_csv(ITEMS)
     assert len(Item.all) == 5
+    with pytest.raises(FileNotFoundError):
+        Item.instantiate_from_csv('ite.csv')
+    with pytest.raises(InstantiateCSVError):
+        Item.instantiate_from_csv(ITEMS_WITHOUT_COLLUMS)
 
 
 def test_string_to_number():
