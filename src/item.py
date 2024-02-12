@@ -62,16 +62,23 @@ class Item:
 
     @classmethod
     def instantiate_from_csv(cls, file):
-        with open(file, encoding='windows-1251') as csvfile:
-            reader = csv.reader(csvfile, delimiter=',')
-            count = 0
-            item_all = []
-            for row in reader:
-                if count == 0:
-                    count += 1
-                else:
-                    item_all.append(cls(row[0], row[1], row[2]))
-        cls.all = item_all
+        try:
+            with open(file, encoding='windows-1251') as csvfile:
+                reader = csv.reader(csvfile, delimiter=',')
+                count = 0
+                item_all = []
+                for row in reader:
+                    if count == 0:
+                        count += 1
+                    else:
+                        item_all.append(cls(row[0], row[1], row[2]))
+            cls.all = item_all
+        except FileNotFoundError:
+            print(f'Отсутствует файл {file}')
+            raise
+        except IndexError:
+            raise InstantiateCSVError(f'Файл {file} поврежден')
+            # print(f'Файл {file} поврежден')
 
     @staticmethod
     def string_to_number(string_number):
@@ -79,3 +86,10 @@ class Item:
             return int(string_number)
         else:
             return int(float(string_number))
+
+
+class InstantiateCSVError(Exception):
+
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        print(self.args)
